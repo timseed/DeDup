@@ -139,33 +139,114 @@
 .if n .ad l
 .nh
 .SH "NAME"
-DeDup \- Perl extension for blah blah blah
+DeDup \- Perl extension for DeDuplicating values in Text files.
+.SS "\s-1REQUIREMENTS\s0 This module requires File::Temp"
+.IX Subsection "REQUIREMENTS This module requires File::Temp"
+.Vb 1
+\&   perl \-MCPAN \-eshell install File::Temp
+.Ve
 .SH "SYNOPSIS"
 .IX Header "SYNOPSIS"
-.Vb 2
+.Vb 7
 \&  use DeDup;
-\&  blah blah blah
+\&  my $fn="";
+\&  my $dd= new DeDup();
+\&  $dd\->LoadFile("BankAccounts.csv");
+\&  $dd\->DeDuplicate( \*(Aq,\*(Aq, 0 ) ;    #Use a , and Set the Main Field as Being Field 0 (C Notation)
+\&  $fn=$dd\->Output();
+\&  print("De Duplicated data is in $fn");
+.Ve
+.SH "Example"
+.IX Header "Example"
+.Vb 11
+\&        #!/usr/bin/perl
+\&        use strict;
+\&        use warnings;
+\&        use File::Temp;
+\&        use DeDup;
+\&        ######## Test For csv Data 
+\&        #
+\&        #
+\&        ########
+\&        my $fn="";
+\&        my $dd= new DeDup();
+\&
+\&        $dd\->Debug(0);
+\&        print "Starting";
+\&        $dd\->LoadFile("BankAccounts.csv");
+\&        $dd\->DeDuplicate( \*(Aq,\*(Aq, 0 ) ;    #Use a , and Set the Main Field as Being Field 0 (C Notation)
+\&        $fn=$dd\->Output();
+\&        print("De Duplicated data is in $fn");
+\&
+\&        printf("\en\en\en");
+\&        ######## Test For * EMail Data 
+\&        #
+\&        #
+\&        ########
+\&        print "Starting";
+\&        $dd\->LoadFile("contacts.dat");
+\&        $dd\->DeDuplicate( \*(Aq\e*\*(Aq, 2 ) ;    #Use a , and Set the Main Field as Being Field 0 (C Notation)
+\&        $fn=$dd\->Output();
+\&        print("De Duplicated data is in $fn")
 .Ve
 .SH "DESCRIPTION"
 .IX Header "DESCRIPTION"
+DeDup assumes that the field you specify as the 
 Stub documentation for DeDup, created by h2xs. It looks like the
 author of the extension was negligent enough to leave the stub
 unedited.
 .PP
 Blah blah blah.
+.SH "Initialize"
+.IX Header "Initialize"
+Just call the class like this \- there are no needed Parameters
+.PP
+.Vb 2
+\&   use DeDup;
+\&   my $dd=new DeDup();
+.Ve
+.SH "LoadFile"
+.IX Header "LoadFile"
+This method requires a filename. Any Valid File name should work \- although I have not tried \s-1UTF\-8\s0 names.
+.PP
+.Vb 1
+\&   LoadFile(FILENAME)
+.Ve
+.PP
+Note: If you have Data in Mulitple files... and you want to de-duplicate them you would need to do this
+.PP
+.Vb 3
+\&   $dd.LoadFile(FILE1);
+\&   $dd.LoadFile(FILE2);
+\&   $dd.LoadFile(FILE3);
+.Ve
+.PP
+This would add all the files together... I am assuming that their structure is the same ....
+.SH "DeDuplicate"
+.IX Header "DeDuplicate"
+.Vb 2
+\&   $dd.DeDuplicate(\*(Aq,\*(Aq,2);     #Use , as delimiter, key is a position 2
+\&   $dd.DeDuplicate(\*(Aq*\*(Aq,1);     #Use * as delimiter, key is a position 1
+.Ve
+.PP
+This module needs 2 parameters
+.SS "Delimiter Assumed to be a single character but can be a string. At the moment this will not work as a Reg-Ex.... but it would be quite east to make it work like that."
+.IX Subsection "Delimiter Assumed to be a single character but can be a string. At the moment this will not work as a Reg-Ex.... but it would be quite east to make it work like that."
+.SS "Key_Position Needs to be a interger, specifying which field (using your defintion of a Delimiter) \- is to be the index field."
+.IX Subsection "Key_Position Needs to be a interger, specifying which field (using your defintion of a Delimiter) - is to be the index field."
+The indexing starts at 0 (C/\*(C+/Python Style)
+.SH "Output Needs no parameters. It will create a temporary output file.... and returns the filename."
+.IX Header "Output Needs no parameters. It will create a temporary output file.... and returns the filename."
+.Vb 1
+\&   $new_file=$dd.Output();
+\&
+\&   ....go do something with new_file
+.Ve
+.PP
+\&\s-1THE ORIGINAL FILE REMAINS\s0 UN-TOUCHED
 .SS "\s-1EXPORT\s0"
 .IX Subsection "EXPORT"
 None by default.
-.SH "SEE ALSO"
-.IX Header "SEE ALSO"
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in \s-1UNIX\s0), or any relevant external documentation such as RFCs or
-standards.
-.PP
-If you have a mailing list set up for your module, mention it here.
-.PP
-If you have a web site set up for your module, mention it here.
 .SH "AUTHOR"
 .IX Header "AUTHOR"
 tim, <tim@>

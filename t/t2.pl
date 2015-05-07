@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use lib '/home/tim/Dev/Perl/DeDup';
 use File::Temp;
 
 use DeDup;
@@ -12,7 +13,7 @@ use DeDup;
 my $fn="";
 my $dd= new DeDup();
 
-$dd->Debug(1);
+$dd->Debug(0);
 print "Starting";
 $dd->LoadFile("BankAccounts.csv");
 $dd->DeDuplicate( ',', 0 ) ;    #Use a , and Set the Main Field as Being Field 0 (C Notation)

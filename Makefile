@@ -161,7 +161,8 @@ C_FILES  =
 O_FILES  = 
 H_FILES  = 
 MAN1PODS = 
-MAN3PODS = lib/DeDup.pm
+MAN3PODS = DeDup.pm \
+	lib/DeDup.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
@@ -183,16 +184,22 @@ PERL_ARCHIVE       =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/DeDup.pm \
+TO_INST_PM = DeDup.pm \
+	lib/DeDup.pm \
+	lib/DeDup.pm.tdy \
 	t.pl \
 	t2.pl
 
-PM_TO_BLIB = lib/DeDup.pm \
-	blib/lib/DeDup.pm \
-	t.pl \
+PM_TO_BLIB = t.pl \
 	$(INST_LIB)/t.pl \
 	t2.pl \
-	$(INST_LIB)/t2.pl
+	$(INST_LIB)/t2.pl \
+	lib/DeDup.pm \
+	blib/lib/DeDup.pm \
+	lib/DeDup.pm.tdy \
+	blib/lib/DeDup.pm.tdy \
+	DeDup.pm \
+	$(INST_LIB)/DeDup.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -415,9 +422,11 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all  \
-	lib/DeDup.pm
+	lib/DeDup.pm \
+	DeDup.pm
 	$(NOECHO) $(POD2MAN) --section=$(MAN3EXT) --perm_rw=$(PERM_RW) \
-	  lib/DeDup.pm $(INST_MAN3DIR)/DeDup.$(MAN3EXT) 
+	  lib/DeDup.pm $(INST_MAN3DIR)/DeDup.$(MAN3EXT) \
+	  DeDup.pm $(INST_MAN3DIR)/DeDup.$(MAN3EXT) 
 
 
 
@@ -444,22 +453,22 @@ clean_subdirs :
 
 clean :: clean_subdirs
 	- $(RM_F) \
-	  perlmain.c $(BOOTSTRAP) \
-	  mon.out $(BASEEXT).exp \
-	  core.[0-9][0-9][0-9] core.*perl.*.? \
-	  $(INST_ARCHAUTODIR)/extralibs.ld pm_to_blib \
+	  $(INST_ARCHAUTODIR)/extralibs.ld perl.exe \
+	  *$(OBJ_EXT) MYMETA.json \
+	  core.*perl.*.? mon.out \
+	  so_locations $(BASEEXT).exp \
+	  $(BASEEXT).x lib$(BASEEXT).def \
+	  *perl.core perl \
 	  $(BASEEXT).def MYMETA.yml \
-	  *$(OBJ_EXT) tmon.out \
-	  $(MAKE_APERL_FILE) *perl.core \
-	  *$(LIB_EXT) core.[0-9][0-9][0-9][0-9][0-9] \
-	  core.[0-9][0-9][0-9][0-9] blibdirs.ts \
-	  core.[0-9][0-9] core.[0-9] \
-	  so_locations pm_to_blib.ts \
-	  core perl \
-	  MYMETA.json $(BASEEXT).x \
-	  $(BASEEXT).bso lib$(BASEEXT).def \
-	  perl.exe perl$(EXE_EXT) \
-	  $(INST_ARCHAUTODIR)/extralibs.all 
+	  *$(LIB_EXT) perlmain.c \
+	  $(BOOTSTRAP) core \
+	  pm_to_blib $(MAKE_APERL_FILE) \
+	  pm_to_blib.ts core.[0-9][0-9][0-9] \
+	  blibdirs.ts $(INST_ARCHAUTODIR)/extralibs.all \
+	  core.[0-9][0-9][0-9][0-9] core.[0-9][0-9][0-9][0-9][0-9] \
+	  tmon.out core.[0-9] \
+	  $(BASEEXT).bso perl$(EXE_EXT) \
+	  core.[0-9][0-9] 
 	- $(RM_RF) \
 	  blib 
 	- $(MV) $(FIRST_MAKEFILE) $(MAKEFILE_OLD) $(DEV_NULL)
@@ -483,7 +492,7 @@ realclean purge ::  clean realclean_subdirs
 metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '---' > META_new.yml
-	$(NOECHO) $(ECHO) 'abstract: '\''Perl extension for blah blah blah'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'abstract: '\''Perl extension for DeDuplicating values in Text files. '\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  - '\''tim <tim@>'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
@@ -506,7 +515,7 @@ metafile : create_distdir
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
-	$(NOECHO) $(ECHO) '   "abstract" : "Perl extension for blah blah blah",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "abstract" : "Perl extension for DeDuplicating values in Text files. ",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '      "tim <tim@>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
@@ -816,7 +825,7 @@ testdb_static :: testdb_dynamic
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="$(VERSION)">' > $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension for blah blah blah</ABSTRACT>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension for DeDuplicating values in Text files. </ABSTRACT>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>tim &lt;tim@&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="x86_64-linux-gnu-thread-multi-5.18" />' >> $(DISTNAME).ppd
@@ -829,9 +838,11 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/DeDup.pm blib/lib/DeDup.pm \
 	  t.pl $(INST_LIB)/t.pl \
-	  t2.pl $(INST_LIB)/t2.pl 
+	  t2.pl $(INST_LIB)/t2.pl \
+	  lib/DeDup.pm blib/lib/DeDup.pm \
+	  lib/DeDup.pm.tdy blib/lib/DeDup.pm.tdy \
+	  DeDup.pm $(INST_LIB)/DeDup.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
