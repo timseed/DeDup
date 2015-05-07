@@ -1,16 +1,17 @@
 DeDup version 0.01
 ==================
 
-The README is used to introduce the module and provide instructions on
-how to install the module, any machine dependencies it may have (for
-example C compilers and installed libraries) and any other information
-that should be provided before the module is installed.
+This Perl module is a generic Data Deplication module.
 
-A README file is required for CPAN modules since CPAN extracts the
-README file from a module distribution so that people browsing the
-archive can use it get an idea of the modules uses. It is usually a
-good idea to provide version information here so that people can
-decide whether fixes for the module are worth downloading.
+It should work with any text based (not binary) data files, which have a character or string delimitation (currently it does not work using Regular Expressions).
+
+The Data Duplication is using the "Last Record is the Record" option - it will internally overwrite duplicate values. Again a list of Duplications could be easily added if required;
+
+You need tp specify a delimiter and a single key field.
+
+Output is generated and will not touch your input files.
+
+
 
 INSTALLATION
 
@@ -25,7 +26,10 @@ DEPENDENCIES
 
 This module requires these other modules and libraries:
 
-  blah blah blah
+This module is needed.
+
+    File::Temp
+
 
 COPYRIGHT AND LICENCE
 
