@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
-use lib '/home/tim/Dev/Perl/DeDup';
+use lib '~/Dev/perl/DeDup';
 use File::Temp;
 
 use DeDup;

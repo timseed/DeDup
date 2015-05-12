@@ -101,15 +101,16 @@ sub Output {
     my $v      = "";
     my $file   = tmpnam();
     open( my $OFP, '>', $file ) or die 'Can not open file $file';
-
-    #print Dumper($self);
-
-    # Output using the hash - but sort on the key value
     my %data= %{$self->{_items}};
-    foreach $v ( sort keys %data ) {
-         print $OFP  %data->{$v}. "\n";
-         #print "Key ".%data->{$v};
-    }
+ 
+   #while( my( $key, $value ) = each %data){
+    #     print $OFP  $value ."\n";
+    #}
+
+   #Note this is ASCII Sort 
+   foreach my $key (sort keys %data) {
+        print $OFP $data{$key}. "\n";;
+   }
     return $file;
 }
 
